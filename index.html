@@ -49,8 +49,11 @@
         const name = document.getElementById("prgmName").value;
         const txt = unescape(encodeURIComponent(document.getElementById("myText").value)); // encoding issues...
 
+        const options = new Module['options_t']();
+        options.set('useShortestTokens', 1);
+
         const prgm = TIVarFile.createNew(TIVarType.createFromName("Program"), name, TIModel.createFromName("84+"));
-        prgm.setContentFromString(txt);
+        prgm.setContentFromString(txt, options);
         prgm.saveVarToFile("", name);
 
         const fileName = name + ".8xp";
