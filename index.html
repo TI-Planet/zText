@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <style>
+        .container .jumbotron { padding-top: 20px; }
         .jumbotron p { font-size: 16px; }
         #myText { width: 100%; min-height: 100px; }
     </style>
@@ -29,8 +30,8 @@
             <textarea id="myText" title="Your text here" placeholder="Write your text here" required></textarea>
         </p>
         <p>
-            <input id="prgmName" type="text" pattern="^[a-zA-Z0-9]$" title="Title" value="MYTITLE" required/><br/>
-            <button id="genButton" class="btn btn-primary btn-sm" title="Download the generated program (8xp file)"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download .8xp</button>
+            <input id="prgmName" type="text" pattern="^[a-zA-Z0-9]$" maxlength="8" title="Title" value="MYTITLE" required/> 8 chars max (A-Z, 0-9)<br><br>
+            <button type="submit" id="genButton" class="btn btn-primary btn-sm" title="Download the generated program (8xp file)"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download .8xp</button>
         </p>
 
         <p class="pull-right"><small><i>Powered by Adriweb's <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> through Emscripten</i></small></p>
@@ -61,7 +62,6 @@
         } else {
             alert('Oops, something went wrong retrieving the generated .8xp file :(');
         }
-
     })
 </script>
 
