@@ -60,6 +60,11 @@
         const txt = unescape(encodeURIComponent(document.getElementById("myText").value)); // encoding issues...
         const name = document.getElementById("prgmName").value;
 
+        if (txt.length === 0)
+        {
+            alert('Empty text!');
+            return false;
+        }
 
         const lib = Module;
 
