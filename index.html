@@ -13,46 +13,60 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
     <style>
-        .container .jumbotron { padding-top: 20px; }
+        .container .jumbotron { padding-top: 20px; font-weight: initial; }
+        .container .jumbotron .reduced { max-width: 500px; margin: auto }
+        .jumbotron h3 { font-weight: bold; margin-bottom: 20px; }
         .jumbotron p { font-size: 16px; }
-        #myText { width: 100%; min-height: 100px; }
+        #convForm label { font-weight: initial; }
+        #convForm label input { font-weight: bold; }
+        #myText { width: 100%; max-width: 100%; min-height: 200px; font-family: "TI-83 Plus", "Ti83Pluspc", "Helvetica Neue", Helvetica, Arial, sans-serif; }
+        #prgmName { width: 90px; }
+        #footer { margin-top: 30px; margin-bottom: 0; }
     </style>
 </head>
 
 <body>
 
 <div class="container">
-
     <div class="jumbotron">
-        <h3>Text to 8xp generator</h3>
+        <div class="reduced">
+            <h3>zText: text to 8xp converter</h3>
 
-        <p>
-            <textarea id="myText" title="Your text here" placeholder="Write your text here" required></textarea>
-        </p>
-        <p>
-            <input id="prgmName" type="text" pattern="^[a-zA-Z0-9]$" maxlength="8" title="Title" value="MYTITLE" required/> 8 chars max (A-Z, 0-9)<br><br>
-            <button type="submit" id="genButton" class="btn btn-primary btn-sm" title="Download the generated program (8xp file)"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download .8xp</button>
-        </p>
+            <form id="convForm">
+                <textarea id="myText" title="Your text here" name="myText" placeholder="Write your text here" required></textarea>
+                <div class="row">
+                    <div class="col-md-8">
+                        <label>
+                            <input id="prgmName" type="text" pattern="^[a-zA-Z][a-zA-Z0-9]{0,7}$" maxlength="8" title="Chars: A-Z, 0-9. Start with a letter" value="MYTITLE" required/> 8 chars max (A-Z, 0-9)
+                        </label>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <button type="submit" id="genButton" class="btn btn-primary btn-sm" title="Download the generated program (8xp file)"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download .8xp</button>
+                    </div>
+                </div>
+            </form>
 
-        <p class="pull-right"><small><i>Powered by Adriweb's <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> through Emscripten</i></small></p>
+            <p id="footer" class="text-right"><small><i>Powered by Adriweb's <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> through Emscripten</i></small></p>
+
+        </div>
     </div>
-
 </div>
 
 <script>
-    document.getElementById("genButton").addEventListener('click', function()
+    document.getElementById("convForm").onsubmit = function(e)
     {
-        const TIVarFile = Module['TIVarFile'];
-        const TIVarType = Module['TIVarType'];
-        const TIModel   = Module['TIModel'];
+        e.preventDefault();
 
-        const name = document.getElementById("prgmName").value;
         const txt = unescape(encodeURIComponent(document.getElementById("myText").value)); // encoding issues...
+        const name = document.getElementById("prgmName").value;
 
-        const options = new Module['options_t']();
+
+        const lib = Module;
+
+        const options = new lib.options_t();
         options.set('useShortestTokens', 1);
 
-        const prgm = TIVarFile.createNew(TIVarType.createFromName("Program"), name, TIModel.createFromName("84+"));
+        const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), name, lib.TIModel.createFromName("84+"));
         prgm.setContentFromString(txt, options);
         prgm.saveVarToFile("", name);
 
@@ -65,7 +79,9 @@
         } else {
             alert('Oops, something went wrong retrieving the generated .8xp file :(');
         }
-    })
+
+        return false;
+    }
 </script>
 
 </body>
