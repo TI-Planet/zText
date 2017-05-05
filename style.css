@@ -1,0 +1,116 @@
+.container .jumbotron {
+    padding: 20px;
+    font-weight: initial;
+}
+
+.container .jumbotron .reduced {
+    max-width: 550px;
+    margin: auto
+}
+
+.jumbotron h3 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.jumbotron p {
+    font-size: 16px;
+}
+
+#convForm label {
+    font-weight: initial;
+}
+
+#convForm label input {
+    font-weight: bold;
+}
+
+#myText {
+    width: 100%;
+    max-width: 100%;
+    min-height: 200px;
+}
+
+#genButton {
+    position: relative;
+    left: 1px;
+}
+
+#prgmName {
+    width: 90px;
+}
+
+#footer {
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+.choiceWrapper {
+    background-color: #dadada;
+    padding: 5px;
+    margin-right: 11px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.choiceWrapper input[type="radio"] {
+    bottom: 45%;
+}
+
+#chosenCalcName {
+    display: inline-block;
+}
+
+#calcPreview {
+    box-shadow: 0 0 1px 1px #353535
+}
+#calcPreview .content {
+    font-family: 'Geo',sans-serif;
+}
+
+#calcPreview.calc83PCE {
+    width:320px;
+    height:240px;
+    background: #F0F0FF;
+}
+#calcPreview.calc83PCE .statusBar {
+    height: 30px;
+    background: #5d5d5d;
+    font-family: 'Geo', sans-serif;
+    color: white;
+    font-size: 18px;
+    line-height: 14px;
+    padding-left: 1px;
+}
+#calcPreview.calc83PCE .content {
+    margin: 16px 28px 28px;
+    background: white;
+    font-size: 17.5px;
+    line-height: 13px;
+    color: blue;
+    height: 165px; /* meh */
+    padding: 2px 1px;
+}
+
+#calcPreview.calc83 {
+    text-transform: uppercase;
+}
+
+#calcPreview.calc82A, #calcPreview.calc83 {
+    width: 96px;
+    height: 64px;
+    background: #899875;
+    transform: scale(2);
+    transform-origin: 0 0;
+    margin-bottom: 80px;
+}
+#calcPreview.calc82A .statusBar, #calcPreview.calc83 .statusBar {
+    display: none;
+}
+#calcPreview.calc82A .content, #calcPreview.calc83 .content {
+    padding: 1px;
+    font-size: 8px;
+    line-height: 7px;
+    color: black;
+    font-weight: bold;
+}

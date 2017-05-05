@@ -4,25 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Text to 8xp online generator</title>
+    <title>zText: Convertisseur en ligne Text => 8xp</title>
 
     <script src="FileSaver.min.js" async></script>
     <script src="tivars_test.js" async></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Geo' type='text/css'>
+    <link rel='stylesheet' href='style.css' type='text/css'>
 
-    <style>
-        .container .jumbotron { padding-top: 20px; font-weight: initial; }
-        .container .jumbotron .reduced { max-width: 500px; margin: auto }
-        .jumbotron h3 { font-weight: bold; margin-bottom: 20px; }
-        .jumbotron p { font-size: 16px; }
-        #convForm label { font-weight: initial; }
-        #convForm label input { font-weight: bold; }
-        #myText { width: 100%; max-width: 100%; min-height: 200px; font-family: "TI-83 Plus", "Ti83Pluspc", "Helvetica Neue", Helvetica, Arial, sans-serif; }
-        #prgmName { width: 90px; }
-        #footer { margin-top: 30px; margin-bottom: 0; }
-    </style>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 
 <body>
@@ -30,30 +22,65 @@
 <div class="container">
     <div class="jumbotron">
         <div class="reduced">
-            <h3>zText: text to 8xp converter</h3>
+            <h3>zText: convertisseur texte => 8xp</h3>
 
             <form id="convForm">
-                <textarea id="myText" title="Your text here" name="myText" placeholder="Write your text here" required></textarea>
+                <textarea id="myText" title="Your text here" name="myText" placeholder="Écrivez votre texte ici" required></textarea>
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-xs-7">
                         <label>
-                            <input id="prgmName" type="text" pattern="^[a-zA-Z][a-zA-Z0-9]{0,7}$" maxlength="8" title="Chars: A-Z, 0-9. Start with a letter" value="MYTITLE" required/> 8 chars max (A-Z, 0-9)
+                            <input id="prgmName" type="text" pattern="^[a-zA-Z][a-zA-Z0-9]{0,7}$" maxlength="8" title="Caractères: A-Z, 0-9. Doit commencer par une lettre" value="TITRE" required/> ≤ 8 caract.
                         </label>
                     </div>
-                    <div class="col-md-4 text-right">
-                        <button type="submit" id="genButton" class="btn btn-primary btn-sm" title="Download the generated program (8xp file)"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Download .8xp</button>
+                    <div class="col-xs-5 text-right">
+                        <button type="submit" id="genButton" class="btn btn-primary btn-sm" title="Télécharger le programme généré (fichier .8xp)">
+                            <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Télécharger le .8xp
+                        </button>
                     </div>
                 </div>
             </form>
 
-            <p id="footer" class="text-right"><small><i>Powered by Adriweb's <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> through Emscripten</i></small></p>
+            <br>
+
+            <h4>Calculatrice cible :</h4>
+            <div>
+                <div class="choiceWrapper">
+                    <label class="radio-inline" title="TI-82 et 83 (vieux modèles)">
+                        <input type="radio" name="target" id="inlineRadio1" value="83"> <img src="https://wiki.tiplanet.org/images/thumb/4/4d/TI-83.png/59px-TI-83.png"/>
+                    </label>
+                </div>
+                <div class="choiceWrapper">
+                    <label class="radio-inline" title="TI-82 Advanced et TI-83/84 Plus (SE)">
+                        <input type="radio" name="target" id="inlineRadio2" value="82A"> <img src="https://wiki.tiplanet.org/images/thumb/e/e1/TI-82_Advanced.png/59px-TI-82_Advanced.png"/>
+                    </label>
+                </div>
+                <div class="choiceWrapper">
+                    <label class="radio-inline" title="TI-83 Premium CE / TI-84 Plus CE">
+                        <input type="radio" name="target" id="inlineRadio3" value="83PCE"> <img src="https://i.imgur.com/VwKirhe.png"/>
+                    </label>
+                </div>
+                <span id="chosenCalcName"></span>
+            </div>
+
+            <br>
+
+            <h4>Aperçu</h4>
+            <div id="calcPreview">
+                <div class="statusBar">NORMAL FLOAT AUTO REAL RADIAN MP</div>
+                <div class="content"></div>
+            </div>
 
         </div>
+        <p id="footer" class="text-right">
+            <small><i>Utilise <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> via Emscripten</i></small>
+        </p>
     </div>
 </div>
 
 <script>
-    document.getElementById("convForm").onsubmit = function(e)
+    let chosenCalc = 'CE';
+
+    $("#convForm").on('submit', function(e)
     {
         e.preventDefault();
 
@@ -71,14 +98,15 @@
         const options = new lib.options_t();
         options.set('useShortestTokens', 1);
 
-        const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), name, lib.TIModel.createFromName("84+"));
+        const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), name, lib.TIModel.createFromName(chosenCalc));
         prgm.setContentFromString(txt, options);
         prgm.saveVarToFile("", name);
 
         const fileName = name + ".8xp";
 
         const file = FS.readFile(fileName, {encoding: 'binary'});
-        if (file) {
+        if (file)
+        {
             const blob = new Blob([file], {type: 'application/octet-stream'});
             window['saveAs'](blob, fileName);
         } else {
@@ -86,7 +114,23 @@
         }
 
         return false;
-    }
+    });
+
+    $(".choiceWrapper input[type='radio']").on('change', function()
+    {
+        const calcInput = $(this);
+        chosenCalc = $(this).val();
+        $("#calcPreview").attr('class', 'calc' + chosenCalc);
+        $("#chosenCalcName").text(calcInput.parent().attr("title"));
+    })
+    .filter("[value='83PCE']").click(); /* initial/default value */
+
+    $("#myText").on('keyup', function()
+    {
+        const text = $(this).val();
+        $("#calcPreview .content").text(text);
+    });
+
 </script>
 
 </body>
