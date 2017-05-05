@@ -46,17 +46,17 @@
             <div>
                 <div class="choiceWrapper">
                     <label class="radio-inline" title="TI-82 et 83 (vieux modèles)">
-                        <input type="radio" name="target" id="inlineRadio1" value="83"> <img src="https://wiki.tiplanet.org/images/thumb/4/4d/TI-83.png/59px-TI-83.png"/>
+                        <input type="radio" name="target" value="83"> <img src="https://wiki.tiplanet.org/images/thumb/4/4d/TI-83.png/59px-TI-83.png"/>
                     </label>
                 </div>
                 <div class="choiceWrapper">
                     <label class="radio-inline" title="TI-82 Advanced et TI-83/84 Plus (SE)">
-                        <input type="radio" name="target" id="inlineRadio2" value="82A"> <img src="https://wiki.tiplanet.org/images/thumb/e/e1/TI-82_Advanced.png/59px-TI-82_Advanced.png"/>
+                        <input type="radio" name="target" value="82A"> <img src="https://wiki.tiplanet.org/images/thumb/e/e1/TI-82_Advanced.png/59px-TI-82_Advanced.png"/>
                     </label>
                 </div>
                 <div class="choiceWrapper">
                     <label class="radio-inline" title="TI-83 Premium CE / TI-84 Plus CE">
-                        <input type="radio" name="target" id="inlineRadio3" value="83PCE"> <img src="https://i.imgur.com/VwKirhe.png"/>
+                        <input type="radio" name="target" value="83PCE"> <img src="https://i.imgur.com/VwKirhe.png"/>
                     </label>
                 </div>
                 <span id="chosenCalcName"></span>
@@ -93,24 +93,36 @@
             return false;
         }
 
-        const lib = Module;
-
-        const options = new lib.options_t();
-        options.set('useShortestTokens', 1);
-
-        const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), name, lib.TIModel.createFromName(chosenCalc));
-        prgm.setContentFromString(txt, options);
-        prgm.saveVarToFile("", name);
-
-        const fileName = name + ".8xp";
-
-        const file = FS.readFile(fileName, {encoding: 'binary'});
-        if (file)
+        let lastFilePath = null;
+        try
         {
-            const blob = new Blob([file], {type: 'application/octet-stream'});
-            window['saveAs'](blob, fileName);
-        } else {
-            alert('Oops, something went wrong retrieving the generated .8xp file :(');
+            const lib = Module;
+
+            if (lastFilePath !== null) {
+                FS.unlink(lastFilePath);
+                lastFilePath = null;
+            }
+
+            const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), name, lib.TIModel.createFromName(chosenCalc));
+
+            const options = new lib.options_t();
+            options.set('useShortestTokens', 1);
+
+            prgm.setContentFromString(txt, options);
+            const filePath = prgm.saveVarToFile("", name);
+            lastFilePath = filePath;
+
+            const file = FS.readFile(filePath, {encoding: 'binary'});
+            if (file)
+            {
+                const blob = new Blob([file], {type: 'application/octet-stream'});
+                window['saveAs'](blob, filePath.split('/').pop());
+            } else {
+                alert('Oops, something went wrong retrieving the generated .8xp file :(');
+            }
+
+        } catch (e) {
+            alert('Hmmm. Une erreur est survenue. ' + e.toString());
         }
 
         return false;
