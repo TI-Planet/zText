@@ -8,6 +8,7 @@
 
     <script src="FileSaver.min.js" async></script>
     <script src="tivars_test.js" async></script>
+    <script src="generator.js"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -25,7 +26,17 @@
             <h3>zText: convertisseur texte => 8xp</h3>
 
             <form id="convForm">
-                <textarea id="myText" title="Your text here" name="myText" placeholder="Écrivez votre texte ici" required></textarea>
+                <section id="advancedCreator">
+                    <p class="infos">Tapez maintenant votre cours dans chaque partie, puis cliquer sur générer.</p>
+                    <div class="step2"></div>
+                    <div class="infos"></div>
+                    <p>N'oublie pas d'également transférer <a href="ressources/ZTEXT.8xp" target="_blank" download>le programme "ZTEXT"</a> sur ta calculatrice!</p>
+                </section>
+                <section id="simpleCreator">
+                    Vous souhaitez organisez votre cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Cliquez-ici</button>
+                    <br><br>
+                    <textarea id="myText0" title="Votre texte ici" name="myText0" placeholder="Écrivez votre texte dans cette zone" required></textarea>
+                </section>
                 <div class="row">
                     <div class="col-xs-7">
                         <label>
@@ -78,53 +89,19 @@
 </div>
 
 <script>
-    let chosenCalc = 'CE';
+
+
+    $("#toggleAdvanced").on('click', function(e)
+    {
+        e.preventDefault();
+        $("#simpleCreator, #advancedCreator").toggle();
+        setTimeout(startWizard, 100);
+    });
 
     $("#convForm").on('submit', function(e)
     {
         e.preventDefault();
-
-        const txt = unescape(encodeURIComponent(document.getElementById("myText").value)); // encoding issues...
-        const name = document.getElementById("prgmName").value;
-
-        if (txt.length === 0)
-        {
-            alert('Empty text!');
-            return false;
-        }
-
-        let lastFilePath = null;
-        try
-        {
-            const lib = Module;
-
-            if (lastFilePath !== null) {
-                FS.unlink(lastFilePath);
-                lastFilePath = null;
-            }
-
-            const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), name, lib.TIModel.createFromName(chosenCalc));
-
-            const options = new lib.options_t();
-            options.set('useShortestTokens', 1);
-
-            prgm.setContentFromString(txt, options);
-            const filePath = prgm.saveVarToFile("", name);
-            lastFilePath = filePath;
-
-            const file = FS.readFile(filePath, {encoding: 'binary'});
-            if (file)
-            {
-                const blob = new Blob([file], {type: 'application/octet-stream'});
-                window['saveAs'](blob, filePath.split('/').pop());
-            } else {
-                alert('Oops, something went wrong retrieving the generated .8xp file :(');
-            }
-
-        } catch (e) {
-            alert('Hmmm. Une erreur est survenue. ' + e.toString());
-        }
-
+        generateCourse();
         return false;
     });
 
@@ -137,11 +114,14 @@
     })
     .filter("[value='83PCE']").click(); /* initial/default value */
 
-    $("#myText").on('keyup', function()
+    function registerPreviewHandler()
     {
-        const text = $(this).val();
-        $("#calcPreview .content").text(text);
-    });
+        $("#myText0").on('keyup keypress blur change', function ()
+        {
+            $("#calcPreview .content").text($(this).val());
+        });
+    }
+    registerPreviewHandler();
 
 </script>
 

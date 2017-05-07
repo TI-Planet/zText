@@ -25,10 +25,10 @@
     font-weight: bold;
 }
 
-#myText {
+textarea {
     width: 100%;
     max-width: 100%;
-    min-height: 200px;
+    min-height: 180px;
 }
 
 #genButton {
@@ -65,7 +65,9 @@
     box-shadow: 0 0 1px 1px #353535
 }
 #calcPreview .content {
+    height: 100%;
     font-family: 'Geo',sans-serif;
+    overflow: hidden;
 }
 
 #calcPreview.calc83PCE {
@@ -113,4 +115,8 @@
     line-height: 7px;
     color: black;
     font-weight: bold;
+}
+
+#advancedCreator {
+    display: none;
 }
