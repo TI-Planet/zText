@@ -20,9 +20,14 @@ function isInt(value) {
     return !isNaN(value) && (x => (x|0) === x)(parseFloat(value))
 }
 
-function startWizard()
+function initNewCourse()
 {
     newCourse = "0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:BackgroundOff:ClrDraw:Trace:\n";
+}
+
+function startWizard()
+{
+    initNewCourse();
     $("#myText0").remove();
 
     do {

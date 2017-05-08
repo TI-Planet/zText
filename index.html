@@ -101,6 +101,7 @@
     $("#convForm").on('submit', function(e)
     {
         e.preventDefault();
+        initNewCourse();
         generateCourse();
         return false;
     });
