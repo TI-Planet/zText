@@ -22,7 +22,7 @@ function isInt(value) {
 
 function initNewCourse()
 {
-    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
+    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:BackgroundOff:ClrDraw\n";
 }
 
 function startWizard()
@@ -55,6 +55,12 @@ function generateCourse()
     let inputStr = "";
     let bufferStr = "";
 
+    const MIN_PAS_Y = 12;
+    const MIN_PAS_X = 0;
+    const MAX_CHAR_LINE = 33;
+    const LAST_LINE = 13;
+
+
     for (var j = 0; j < nbParties; j++)
     {
         newCourse += `Lbl ${(j+1)}\n`;
@@ -66,17 +72,15 @@ function generateCourse()
                            .replace(/ /g, "  ") // 2 spaces look better on screen
                         
 
-
-
-         var arrayExp = inputStr.split('\n');
+          var arrayExp = inputStr.split('\n');
 
              for(var i = 0;i<=arrayExp.length - 1;i++){
 
                 bufferStr+=arrayExp[i];
 
-                if(arrayExp[i].length < 33 && arrayExp[i].trim() != ""){
+                if(arrayExp[i].length < MAX_CHAR_LINE && arrayExp[i].trim() != ""){
 
-                    for(var j = 1;j<=33-arrayExp[i].length;j++){
+                    for(var j = 1;j<=MAX_CHAR_LINE-arrayExp[i].length;j++){
                         bufferStr+=" ";
                      }
 
@@ -88,10 +92,7 @@ function generateCourse()
 
         
 
-        const MIN_PAS_Y = 12;
-        const MIN_PAS_X = 0;
-        const MAX_CHAR_LINE = 33;
-        const LAST_LINE = 13;
+       
 
         let Cptlines = 0;
         let CptlinesSave = 0;
