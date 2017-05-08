@@ -22,7 +22,7 @@ function isInt(value) {
 
 function initNewCourse()
 {
-    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:BackgroundOff:ClrDraw\n";
+    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
 }
 
 function startWizard()
@@ -53,6 +53,7 @@ function startWizard()
 function generateCourse()
 {
     let inputStr = "";
+    let bufferStr = "";
 
     for (var j = 0; j < nbParties; j++)
     {
@@ -63,7 +64,29 @@ function generateCourse()
         inputStr = inputStr.replace(/"/g, "''")	// replacing " by '' 
                            .replace(/→/g, "->")	// replacing arrow
                            .replace(/ /g, "  ") // 2 spaces look better on screen
-                           .replace(/\n/g, "                         "); //replacing return
+                        
+
+
+
+         var arrayExp = inputStr.split('\n');
+
+             for(var i = 0;i<=arrayExp.length - 1;i++){
+
+                bufferStr+=arrayExp[i];
+
+                if(arrayExp[i].length < 33 && arrayExp[i].trim() != ""){
+
+                    for(var j = 1;j<=33-arrayExp[i].length;j++){
+                        bufferStr+=" ";
+                     }
+
+                 }
+
+            }
+
+        inputStr = bufferStr;
+
+        
 
         const MIN_PAS_Y = 12;
         const MIN_PAS_X = 0;
