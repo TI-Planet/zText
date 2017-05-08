@@ -27,13 +27,12 @@
 
             <form id="convForm">
                 <section id="advancedCreator">
-                    <p class="infos">Tapez maintenant votre cours dans chaque partie, puis cliquer sur générer.</p>
+                    <p class="infos">Tape maintenant ton cours dans chaque partie, puis clique sur le bouton.</p>
                     <div class="step2"></div>
                     <div class="infos"></div>
-                    <p>N'oublie pas d'également transférer <a href="ressources/ZTEXT.8xp" target="_blank" download>le programme "ZTEXT"</a> sur ta calculatrice!</p>
                 </section>
                 <section id="simpleCreator">
-                    Vous souhaitez organisez votre cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Cliquez-ici</button>
+                    Tu souhaites organiser ton cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Clique-ici</button>
                     <br><br>
                     <textarea id="myText0" title="Votre texte ici" name="myText0" placeholder="Écrivez votre texte dans cette zone" required></textarea>
                 </section>
@@ -49,6 +48,7 @@
                         </button>
                     </div>
                 </div>
+                <p>N'oublie pas d'également transférer <a href="ressources/ZTEXT.8xp" target="_blank" download>le programme "ZTEXT"</a> sur ta calculatrice!</p>
             </form>
 
             <br>
@@ -118,7 +118,9 @@
     {
         $("#myText0").on('keyup keypress blur change', function ()
         {
-            $("#calcPreview .content").text($(this).val());
+            let escaped = $("<div>").text($(this).val()).html();
+            escaped = escaped.replace(/\n/g, "<br>");
+            $("#calcPreview .content").html(escaped);
         });
     }
     registerPreviewHandler();
