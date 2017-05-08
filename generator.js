@@ -130,11 +130,7 @@ function create8xpFile(title, content)
 
         const prgm = lib.TIVarFile.createNew(lib.TIVarType.createFromName("Program"), title, lib.TIModel.createFromName(chosenCalc));
 
-        const options = new lib.options_t();
-        //options.set('useShortestTokens', 1);
-        // todo: shortestTokens on strings only
-
-        prgm.setContentFromString(txt, options);
+        prgm.setContentFromString(txt);
         const filePath = prgm.saveVarToFile("", title);
         lastFilePath = filePath;
 
