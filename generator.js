@@ -22,7 +22,7 @@ function isInt(value) {
 
 function initNewCourse()
 {
-    newCourse = "0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:BackgroundOff:ClrDraw:Trace:\n";
+    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:BackgroundOff:ClrDraw\n";
 }
 
 function startWizard()
@@ -60,10 +60,10 @@ function generateCourse()
 
         inputStr = $(`#myText${j}`).val();
 
-        inputStr = inputStr.replace(/"/g, "''")	// replacing " by ''
+        inputStr = inputStr.replace(/"/g, "''")	// replacing " by '' 
                            .replace(/→/g, "->")	// replacing arrow
                            .replace(/ /g, "  ") // 2 spaces look better on screen
-                           .replace(/\n/g, "                              "); //replacing return
+                           .replace(/\n/g, "                         "); //replacing return
 
         const MIN_PAS_Y = 12;
         const MIN_PAS_X = 0;
@@ -86,11 +86,6 @@ function generateCourse()
             {
                 currentSubStr = inputStr.substring(i, i + MAX_CHAR_LINE);
 
-                /*FILTERING*/
-                //currentSubStr = currentSubStr.replace("\"","''");
-                //currentSubStr = filter(currentSubStr);
-
-                //newCourse+= "Text(" + YText + "," + XText + ",\"" + currentSubStr + "\n"
                 newCourse += `"${currentSubStr}\nprgmZTEXT\n`;
 
                 Cptlines++;
@@ -145,7 +140,7 @@ function create8xpFile(title, content)
             const blob = new Blob([file], {type: 'application/octet-stream'});
             window['saveAs'](blob, filePath.split('/').pop());
         } else {
-            alert('Oops, something went wrong retrieving the generated .8xp file :(');
+            alert('Impossible de récupérer le fichier généré:(');
         }
 
     } catch (e)
