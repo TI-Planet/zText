@@ -16,22 +16,20 @@ let lastFilePath = null;
 let nbParties = 1;
 let parties = [];
 
-function isInt(value) {
+function isInt(value)
+{
     return !isNaN(value) && (x => (x|0) === x)(parseFloat(value))
 }
 
 function initNewCourse()
 {
     newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
-    if(chosenCalc == "83PCE") {  newCourse+="BackgroundOff\n"; }
+    if (chosenCalc === "83PCE") { newCourse+="BackgroundOff\n"; }
 }
 
 function startWizard()
 {
     initNewCourse();
-
-   
-    
     $("#myText0").remove();
 
     do {
@@ -56,25 +54,14 @@ function startWizard()
 
 function generateCourse()
 {
-    let inputStr = "";
+    let inputStr  = "";
     let bufferStr = "";
 
-    if(chosenCalc === "83PCE"){
-
-        var MIN_PAS_Y = 12;
-        var MIN_PAS_X = 0;
-        var MAX_CHAR_LINE = 33;
-        var LAST_LINE = 13;
-        newCourse+="12→W\n";
-
-    }else{
-
-         var MIN_PAS_Y = 7;
-         var MIN_PAS_X = 0;
-         var MAX_CHAR_LINE = 23;
-         var LAST_LINE = 9;
-         newCourse+="7→W\n";
-    }  
+    const MIN_PAS_X      = 0;
+    const MIN_PAS_Y      = (chosenCalc === "83PCE") ? 12 :  7;
+    const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 33 : 23;
+    const LAST_LINE      = (chosenCalc === "83PCE") ? 13 :  9;
+    newCourse           += (chosenCalc === "83PCE") ? "12→W\n" : "7→W\n";
 
     for (var j = 0; j < nbParties; j++)
     {
@@ -84,28 +71,25 @@ function generateCourse()
 
         if(chosenCalc === "83") { inputStr = inputStr.toUpperCase(); }
 
-        inputStr = inputStr.replace(/"/g, "''")	// replacing " by '' 
-                           .replace(/→/g, "->")	// replacing arrow
-                           .replace(/ /g, "  ") // 2 spaces look better on screen
-                        
+        inputStr = inputStr.replace(/"/g, "''")     // replacing " by ''
+                           .replace(/→/g, "->")     // replacing arrow
+                           .replace(/ /g, "  ");    // 2 spaces look better on screen
 
-         var arrayExp = inputStr.split('\n');
+        const arrayExp = inputStr.split('\n');
 
-             for(var i = 0;i<=arrayExp.length - 1;i++){
-
-                bufferStr+=arrayExp[i];
-
-                if(arrayExp[i].length < MAX_CHAR_LINE && arrayExp[i].trim() != ""){
-
-                    for(var j = 1;j<=MAX_CHAR_LINE-arrayExp[i].length;j++){
-                        bufferStr+=" ";
-                     }
-
-                 }
-
+        for (var i = 0; i <= arrayExp.length - 1; i++)
+        {
+            bufferStr += arrayExp[i];
+            if (arrayExp[i].length < MAX_CHAR_LINE && arrayExp[i].trim() !== "")
+            {
+                for (var j = 1; j <= MAX_CHAR_LINE - arrayExp[i].length; j++)
+                {
+                    bufferStr += " ";
+                }
             }
+        }
 
-        inputStr = bufferStr; 
+        inputStr = bufferStr;
 
         let Cptlines = 0;
         let CptlinesSave = 0;
@@ -136,7 +120,6 @@ function generateCourse()
                 Cptlines = 0;
                 CptPages++;
             }
-
         }
 
         newCourse += "Pause :ClrDraw\n";
