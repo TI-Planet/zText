@@ -22,12 +22,16 @@ function isInt(value) {
 
 function initNewCourse()
 {
-    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:BackgroundOff:ClrDraw\n";
+    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
+    if(chosenCalc == "83PCE") {  newCourse+="BackgroundOff\n"; }
 }
 
 function startWizard()
 {
     initNewCourse();
+
+   
+    
     $("#myText0").remove();
 
     do {
@@ -55,11 +59,22 @@ function generateCourse()
     let inputStr = "";
     let bufferStr = "";
 
-    const MIN_PAS_Y = 12;
-    const MIN_PAS_X = 0;
-    const MAX_CHAR_LINE = 33;
-    const LAST_LINE = 13;
+    if(chosenCalc === "83PCE"){
 
+        var MIN_PAS_Y = 12;
+        var MIN_PAS_X = 0;
+        var MAX_CHAR_LINE = 33;
+        var LAST_LINE = 13;
+        newCourse+="12→W\n";
+
+    }else{
+
+         var MIN_PAS_Y = 7;
+         var MIN_PAS_X = 0;
+         var MAX_CHAR_LINE = 23;
+         var LAST_LINE = 9;
+         newCourse+="7→W\n";
+    }  
 
     for (var j = 0; j < nbParties; j++)
     {
@@ -67,12 +82,14 @@ function generateCourse()
 
         inputStr = $(`#myText${j}`).val();
 
+        if(chosenCalc === "83") { inputStr = inputStr.toUpperCase(); }
+
         inputStr = inputStr.replace(/"/g, "''")	// replacing " by '' 
                            .replace(/→/g, "->")	// replacing arrow
                            .replace(/ /g, "  ") // 2 spaces look better on screen
                         
 
-          var arrayExp = inputStr.split('\n');
+         var arrayExp = inputStr.split('\n');
 
              for(var i = 0;i<=arrayExp.length - 1;i++){
 
@@ -88,11 +105,7 @@ function generateCourse()
 
             }
 
-        inputStr = bufferStr;
-
-        
-
-       
+        inputStr = bufferStr; 
 
         let Cptlines = 0;
         let CptlinesSave = 0;
