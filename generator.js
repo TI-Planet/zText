@@ -6,7 +6,7 @@
  Help: tiplanet.org
  */
 
-let newCourse = "";
+let courseHeader = "";
 
 let withMenu = false;
 
@@ -21,68 +21,67 @@ function isInt(value)
     return !isNaN(value) && (x => (x|0) === x)(parseFloat(value))
 }
 
-function initNewCourse()
-{
-    newCourse = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
-    if (chosenCalc === "83PCE") { newCourse+="BackgroundOff\n"; }
-}
-
 function startWizard()
 {
-    initNewCourse();
+    parties = [];
     $("#myText0").remove();
 
     do {
         nbParties = prompt('Combien de parties ? (1-6)');
     } while (!isInt(nbParties) || nbParties < 1 || nbParties > 6);
+    nbParties = parseInt(nbParties);
 
     withMenu = true;
 
     const menuName = prompt('Titre de votre menu (sommaire des parties) ?', 'Sommaire');
-    newCourse += `\nLbl 0\nMenu("${menuName.toUpperCase()}"`;
+    courseHeader += `\nLbl 0\nMenu("${menuName.toUpperCase()}"`;
 
     for (var i = 0; i < nbParties; i++)
     {
         parties[i] = prompt(`Titre de la partie n°${(i+1)}`);
-        newCourse += `,"${parties[i].toUpperCase()}",${(i+1)}`;
+        courseHeader += `,"${parties[i].toUpperCase()}",${(i+1)}`;
         $('.step2').fadeIn(1000).append(`<textarea id="myText${i}" title="Votre texte ici" name="myText${i}" placeholder="Écrivez votre texte dans cette zone">Votre cours, partie ${(i+1)}! </textarea><br />`);
     }
     registerPreviewHandler();
 
-    newCourse += ",\"Quitter\",Q\n";
+    courseHeader += ",\"Quitter\",Q\n";
 }
 
 function generateCourse()
 {
-    let inputStr  = "";
-    let bufferStr = "";
+    let courseInit = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
+    if (chosenCalc === "83PCE") { courseInit += "BackgroundOff\n"; }
 
     const MIN_PAS_X      = 0;
     const MIN_PAS_Y      = (chosenCalc === "83PCE") ? 12 :  7;
     const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 33 : 23;
     const LAST_LINE      = (chosenCalc === "83PCE") ? 13 :  9;
-    newCourse           += (chosenCalc === "83PCE") ? "12→W\n" : "7→W\n";
 
-    for (var j = 0; j < nbParties; j++)
+    let newCourse = courseInit + courseHeader + ((chosenCalc === "83PCE") ? "12→W\n" : "7→W\n");
+
+    for (var part = 0; part < nbParties; part++)
     {
-        newCourse += `Lbl ${(j+1)}\n`;
+        let bufferStr = "";
 
-        inputStr = $(`#myText${j}`).val();
+        newCourse += `Lbl ${(part+1)}\n`;
 
-        if(chosenCalc === "83") { inputStr = inputStr.toUpperCase(); }
+        let inputStr = $(`#myText${part}`).val();
+
+        if (chosenCalc === "83") { inputStr = inputStr.toUpperCase(); }
 
         inputStr = inputStr.replace(/"/g, "''")     // replacing " by ''
                            .replace(/→/g, "->")     // replacing arrow
                            .replace(/ /g, "  ");    // 2 spaces look better on screen
 
-        const arrayExp = inputStr.split('\n');
+        const splitInput = inputStr.split('\n');
 
-        for (var i = 0; i <= arrayExp.length - 1; i++)
+        for (var i = 0; i < splitInput.length; i++)
         {
-            bufferStr += arrayExp[i];
-            if (arrayExp[i].length < MAX_CHAR_LINE && arrayExp[i].trim() !== "")
+            const val = splitInput[i];
+            bufferStr += val;
+            if (val.length < MAX_CHAR_LINE && val.trim() !== "")
             {
-                for (var j = 1; j <= MAX_CHAR_LINE - arrayExp[i].length; j++)
+                for (var idxSpace = 1; idxSpace <= MAX_CHAR_LINE - val.length; idxSpace++)
                 {
                     bufferStr += " ";
                 }
