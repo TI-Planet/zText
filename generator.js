@@ -76,7 +76,6 @@ function generateCourse()
         const splitInput = inputStr.split('\n');
 
         for (var i = 0; i < splitInput.length; i++)
-
         {
             const val = splitInput[i];
             bufferStr += val;
@@ -87,19 +86,14 @@ function generateCourse()
                 {
                     bufferStr += " ";
                 }
-            }else{
-
-                
-                let nbFullLines=~~eval(val.length/MAX_CHAR_LINE); 
-
+            } else {
+                let nbFullLines = (val.length / MAX_CHAR_LINE)|0;
                 let nbSpaces = MAX_CHAR_LINE - val.substring(nbFullLines*MAX_CHAR_LINE,val.length).length;
 
                 for (var idxSpace = 1; idxSpace <= nbSpaces; idxSpace++)
                 {
                     bufferStr += " ";
                 }
-
-
             }
         }
 
