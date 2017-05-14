@@ -76,15 +76,30 @@ function generateCourse()
         const splitInput = inputStr.split('\n');
 
         for (var i = 0; i < splitInput.length; i++)
+
         {
             const val = splitInput[i];
             bufferStr += val;
-            if (val.length < MAX_CHAR_LINE && val.trim() !== "")
+
+            if (val.length < MAX_CHAR_LINE)
             {
                 for (var idxSpace = 1; idxSpace <= MAX_CHAR_LINE - val.length; idxSpace++)
                 {
                     bufferStr += " ";
                 }
+            }else{
+
+                
+                let nbFullLines=~~eval(val.length/MAX_CHAR_LINE); 
+
+                let nbSpaces = MAX_CHAR_LINE - val.substring(nbFullLines*MAX_CHAR_LINE,val.length).length;
+
+                for (var idxSpace = 1; idxSpace <= nbSpaces; idxSpace++)
+                {
+                    bufferStr += " ";
+                }
+
+
             }
         }
 
