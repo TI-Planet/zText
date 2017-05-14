@@ -1,3 +1,7 @@
+body {
+    background-color: initial !important;
+}
+
 .container .jumbotron {
     padding: 20px;
     font-weight: initial;

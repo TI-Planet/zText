@@ -23,7 +23,7 @@
 <div class="container">
     <div class="jumbotron">
         <div class="reduced">
-            <h3>zText: convertisseur texte => 8xp</h3>
+            <h3 id="topTitle" style="display:none">zText: convertisseur texte => 8xp</h3>
 
             <form id="convForm">
                 <section id="advancedCreator">
@@ -90,6 +90,16 @@
 
 <script>
 
+    function inIframe() {
+        try {
+            return window.self !== window.top;
+        } catch (e) {
+            return true;
+        }
+    }
+    if (!inIframe()) {
+        $("#topTitle").show();
+    }
 
     $("#toggleAdvanced").on('click', function(e)
     {
