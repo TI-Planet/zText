@@ -57,7 +57,7 @@ function generateCourse()
     const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 33 : 23;
     const LAST_LINE      = (chosenCalc === "83PCE") ? 13 :  9;
 
-    let newCourse = courseInit + courseHeader + ((chosenCalc === "83PCE") ? "12→W\n" : "7→W\n");
+    let newCourse =  ((chosenCalc === "83PCE") ? "12→W\n" : "7→W\n") + courseInit + courseHeader;
 
     for (var part = 0; part < nbParties; part++)
     {
