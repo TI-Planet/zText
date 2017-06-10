@@ -71,7 +71,6 @@ function generateCourse()
 
         inputStr = inputStr.replace(/"/g, "''")     // replacing " by ''
                            .replace(/→/g, "->")     // replacing arrow
-                           //.replace(/ /g, "  ");    // 2 spaces look better on screen
 
         const splitInput = inputStr.split('\n');
 
@@ -109,11 +108,9 @@ function generateCourse()
 
         let currentSubStr = "";
 
-        alert(MAX_CHAR_LINE);
-
         for (var i = 0; i < inputStr.length; i++)
         {
-            if (!(i % MAX_CHAR_LINE))
+            if ((i % MAX_CHAR_LINE) === 0)
             {
                 currentSubStr = inputStr.substring(i, i + MAX_CHAR_LINE);
 
