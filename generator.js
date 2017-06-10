@@ -54,7 +54,7 @@ function generateCourse()
 
     const MIN_PAS_X      = 0;
     const MIN_PAS_Y      = (chosenCalc === "83PCE") ? 12 :  7;
-    const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 33 : 23;
+    const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 36 : 23;
     const LAST_LINE      = (chosenCalc === "83PCE") ? 13 :  9;
 
     let newCourse =  ((chosenCalc === "83PCE") ? "12→W\n" : "7→W\n") + courseInit + courseHeader;
@@ -71,7 +71,7 @@ function generateCourse()
 
         inputStr = inputStr.replace(/"/g, "''")     // replacing " by ''
                            .replace(/→/g, "->")     // replacing arrow
-                           .replace(/ /g, "  ");    // 2 spaces look better on screen
+                           //.replace(/ /g, "  ");    // 2 spaces look better on screen
 
         const splitInput = inputStr.split('\n');
 
@@ -109,9 +109,11 @@ function generateCourse()
 
         let currentSubStr = "";
 
+        alert(MAX_CHAR_LINE);
+
         for (var i = 0; i < inputStr.length; i++)
         {
-            if ((i % MAX_CHAR_LINE) === 0)
+            if (!(i % MAX_CHAR_LINE))
             {
                 currentSubStr = inputStr.substring(i, i + MAX_CHAR_LINE);
 
