@@ -35,6 +35,10 @@ textarea {
     min-height: 180px;
 }
 
+.hiddenWhenSmallViewer {
+    display: none; /* by default */
+}
+
 #genButton {
     position: relative;
     left: 1px;

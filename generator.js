@@ -1,16 +1,21 @@
 /*
- Course Generator V1.0
+ Course Generator V2.0
+ ----------------------------
  Authors:
- William "Wistaro" Romiguières (this script)
- Adrien "Adriweb" Bertrand (this script + tivars_lib_cpp)
+   William "Wistaro" Romiguières    (this script)
+   "Anonyme0"                       (part of this script)
+   Adrien "Adriweb" Bertrand        (this script + tivars_lib_cpp)
+ ----------------------------
  Help: tiplanet.org
  */
+
+window.whichViewer = 'smallViewer';
 
 let courseHeader = "";
 
 let withMenu = false;
-
 let chosenCalc = 'CE';
+
 let lastFilePath = null;
 
 let nbParties = 1;
@@ -47,7 +52,7 @@ function startWizard()
     courseHeader += ",\"Quitter\",Q\n";
 }
 
-function generateCourse()
+function generateCourseForSmallViewer()
 {
     let courseInit = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
     if (chosenCalc === "83PCE") { courseInit += "BackgroundOff\n"; }
@@ -140,6 +145,54 @@ function generateCourse()
 
     create8xpFile(titlePrgm, newCourse);
 }
+
+function generateCourseForLargeViewer()
+{
+    // Encodage...
+    text = $('#myText0').val().replace(/\"/g, "'"); //remplace les " par des '
+    let cor = text.split("\n");
+    let bc = cor;
+    // 83PCE
+    if (chosenCalc === "83PCE")
+    {
+        for(var i = 0; i < bc.length-1; i++)
+        { // -1 pour pas completer d'espaces la dernière ligne
+            if (bc[i].length > 26) {
+                var n = 26-(bc[i].length-(Math.floor(bc[i].length/26)*26)); // calcul d'espaces nécessaires pour finir la ligne
+            } else {
+                var n = 26-(bc[i].length % 26);
+            }
+            if (n != 26) { // Pour annuler le retour à la ligne par espace lorsqu'une ligne fait 26 caractères
+                for(var a = 0; a < n; a++) {
+                    cor[i] += " ";
+                }
+            }
+        }
+        // 82a
+    } else {
+        for(var i = 0; i < bc.length-1; i++)
+        {
+            if (bc[i].length > 16) {
+                var n = 16-(bc[i].length-(Math.floor(bc[i].length/16)*16));
+            } else {
+                var n = 16-(bc[i].length % 16);
+            }
+            if (n != 16) {
+                for(var a = 0; a < n; a++) {
+                    cor[i] += " ";
+                }
+            }
+        }
+    }
+    cor = cor.join("");
+
+    // Encodage...
+    cor = '"' + cor + '"\nprgmSTRVIEW';
+
+    const titlePrgm = $("#prgmName").val();
+    create8xpFile(titlePrgm, cor);
+}
+
 
 function create8xpFile(title, content)
 {

@@ -32,9 +32,23 @@
                     <div class="infos"></div>
                 </section>
                 <section id="simpleCreator">
+                    <section id="viewerChoice">
+                        Tu veux... un texte avec des :
+                        <label class="radio-inline" title="Grosses lettres">
+                            <input type="radio" name="whichViewer" value="smallViewer" checked> petites lettres
+                        </label>
+                        <label class="radio-inline" title="Petits lettres">
+                            <input type="radio" name="whichViewer" value="largeViewer"> grosses lettres
+                        </label>
+                        .<br>
+                        <i>(Chacun a des avantages et inconvénients : quantité/lisibilité...)</i>
+                    </section>
+                    <br>
+                    <div class="hiddenWhenLargeViewer">
                     Tu souhaites organiser ton cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Clique-ici</button>
                     <br><br>
-                    <textarea id="myText0" title="Votre texte ici" name="myText0" placeholder="Écrivez votre texte dans cette zone" required></textarea>
+                    </div>
+                    <textarea id="myText0" title="Ton texte ici" name="myText0" placeholder="Écris ton texte dans cette zone" required></textarea>
                 </section>
                 <div class="row">
                     <div class="col-xs-7">
@@ -48,14 +62,15 @@
                         </button>
                     </div>
                 </div>
-                <p>N'oublie pas d'également transférer <a href="ressources/ZTEXT.8xp" target="_blank" download>le programme ZTEXT</a> sur ta calculatrice!</p>
+                <p class="hiddenWhenLargeViewer">N'oublie pas d'également transférer <a href="https://tiplanet.org/modules/archives/download.php?id=1026785" target="_blank" download>le programme ZTEXT</a> sur ta calculatrice!</p>
+                <p class="hiddenWhenSmallViewer">N'oublie pas d'également transférer <a href="https://tiplanet.org/modules/archives/download.php?id=1052229" target="_blank" download>le programme STRVIEW</a> sur ta calculatrice!</p>
             </form>
 
             <br>
 
             <h4>Calculatrice cible et aperçu:</h4>
             <div>
-                <div class="choiceWrapper">
+                <div class="choiceWrapper hiddenWhenLargeViewer">
                     <label class="radio-inline" title="TI-82 et 83 (vieux modèles)">
                         <input type="radio" name="target" value="83"> <img src="https://wiki.tiplanet.org/images/thumb/4/4d/TI-83.png/59px-TI-83.png"/>
                     </label>
@@ -71,17 +86,20 @@
                     </label>
                 </div>
                 <span id="chosenCalcName"></span>
-                <br><br>
-                <div id="calcPreview">
-                    <div class="statusBar">NORMAL FLOAT AUTO REAL RADIAN MP</div>
-                    <div class="content"></div>
+                <br>
+                <div class="hiddenWhenLargeViewer">
+                    <br>
+                    <div id="calcPreview">
+                        <div class="statusBar">NORMAL FLOAT AUTO REAL RADIAN MP</div>
+                        <div class="content"></div>
+                    </div>
                 </div>
             </div>
 
 
         </div>
         <p id="footer" class="text-right">
-            <small><i>Utilise le <a href="/forum/viewtopic.php?f=10&t=19901" target="_blank">lecteur zText</a> de Wistaro et <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> d'Adriweb</i></small>
+            <small><i>Utilise le <a href="/forum/viewtopic.php?f=10&amp;t=19901" target="_blank">lecteur</a> de Wistaro ou <a href="https://tiplanet.org/forum/viewtopic.php?f=10&amp;t=19901&amp;p=218752#p216988" target="_blank">celui</a> d'Anonyme0, et <a href="https://github.com/adriweb/tivars_lib_cpp" target="_blank">tivars_lib_cpp</a> d'Adriweb</i></small>
         </p>
     </div>
 </div>
@@ -99,6 +117,20 @@
         $("#topTitle").show();
     }
 
+    $("#viewerChoice input[name='whichViewer']").on('click', function()
+    {
+        window.whichViewer = $(this).val();
+        if (window.whichViewer === 'smallViewer')
+        {
+            $('.hiddenWhenLargeViewer').show();
+            $('.hiddenWhenSmallViewer').hide();
+        } else {
+            $('.choiceWrapper input[value="83PCE"]').click();
+            $('.hiddenWhenLargeViewer').hide();
+            $('.hiddenWhenSmallViewer').show();
+        }
+    });
+
     $("#toggleAdvanced").on('click', function(e)
     {
         e.preventDefault();
@@ -109,7 +141,7 @@
     $("#convForm").on('submit', function(e)
     {
         e.preventDefault();
-        generateCourse();
+        (window.whichViewer === 'smallViewer') ? generateCourseForSmallViewer() : generateCourseForLargeViewer();
         return false;
     });
 
