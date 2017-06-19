@@ -8,7 +8,7 @@
 
     <script src="FileSaver.min.js" async></script>
     <script src="tivars_test.js" async></script>
-    <script src="generator.js"></script>
+    <script src="generator.js?new=2"></script>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -48,15 +48,16 @@
                     Tu souhaites organiser ton cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Clique-ici</button>
                     <br><br>
                     </div>
-                    <textarea id="myText0" title="Ton texte ici" name="myText0" placeholder="Écris ton texte dans cette zone" required></textarea>
+                    <div id="textareaWrapper">
+                        <textarea id="myText0" title="Ton texte ici" name="myText0" placeholder="Écris ton texte dans cette zone" required></textarea>
+                    </div>
                 </section>
-                <div class="row">
-                    <div class="col-xs-7">
+                <div class="row" style="text-align: center">
+                    <div class="col-xs-12">
                         <label>
                             <input id="prgmName" type="text" pattern="^[a-zA-Z][a-zA-Z0-9]{0,7}$" maxlength="8" title="Caractères: A-Z, 0-9. Doit commencer par une lettre" value="TITRE" required/> ≤ 8 caract.
                         </label>
-                    </div>
-                    <div class="col-xs-5 text-right">
+                        &nbsp; &nbsp;
                         <button type="submit" id="genButton" class="btn btn-primary btn-sm" title="Télécharger le programme généré (fichier .8xp)">
                             <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> Télécharger le .8xp
                         </button>
@@ -68,7 +69,7 @@
 
             <br>
 
-            <h4>Calculatrice cible et aperçu:</h4>
+            <h4>Calculatrice cible<span class="hiddenWhenLargeViewer"> et aperçu</span> :</h4>
             <div>
                 <div class="choiceWrapper hiddenWhenLargeViewer">
                     <label class="radio-inline" title="TI-82 et 83 (vieux modèles)">
@@ -124,10 +125,12 @@
         {
             $('.hiddenWhenLargeViewer').show();
             $('.hiddenWhenSmallViewer').hide();
+            $('textarea').removeClass('withLargeViewer').removeAttr('cols');
         } else {
             $('.choiceWrapper input[value="83PCE"]').click();
             $('.hiddenWhenLargeViewer').hide();
             $('.hiddenWhenSmallViewer').show();
+            $('textarea').addClass('withLargeViewer').attr('cols', 26);
         }
     });
 
@@ -150,6 +153,7 @@
         const calcInput = $(this);
         chosenCalc = $(this).val();
         $("#calcPreview").attr('class', 'calc' + chosenCalc);
+        $('textarea').attr('data-calc', chosenCalc);
         $("#chosenCalcName").text(calcInput.parent().attr("title"));
     })
     .filter("[value='83PCE']").click(); /* initial/default value */

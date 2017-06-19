@@ -35,6 +35,24 @@ textarea {
     min-height: 180px;
 }
 
+#textareaWrapper {
+    text-align: center;
+}
+
+textarea.withLargeViewer {
+    font-family: monospace;
+    resize:vertical;
+    font-size: 16px;
+}
+textarea.withLargeViewer[data-calc='83PCE'] {
+    max-width: 230px !important;
+    width: 230px !important;
+}
+textarea.withLargeViewer[data-calc='82A'] {
+    max-width: 165px !important;
+    width: 165px !important;
+}
+
 .hiddenWhenSmallViewer {
     display: none; /* by default */
 }
