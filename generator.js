@@ -54,12 +54,12 @@ function startWizard()
 
 function generateCourseForSmallViewer()
 {
-    let courseInit = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw\n";
-    if (chosenCalc === "83PCE") { courseInit += "BackgroundOff\n"; }
+    let courseInit = "FnOff :0→Xmin:0→Ymin:1→∆X:1→∆Y:AxesOff:ClrDraw:\n";
+    if (chosenCalc === "83PCE") { courseInit += "BackgroundOff:TextColor(BLACK\n"; }
 
     const MIN_PAS_X      = 0;
     const MIN_PAS_Y      = (chosenCalc === "83PCE") ? 12 :  7;
-    const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 36 : 23;
+    const MAX_CHAR_LINE  = (chosenCalc === "83PCE") ? 36 : 28;
     const LAST_LINE      = (chosenCalc === "83PCE") ? 13 :  9;
 
     let newCourse =  ((chosenCalc === "83PCE") ? "12→W\n" : "7→W\n") + courseInit + courseHeader;
