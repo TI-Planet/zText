@@ -146,3 +146,6 @@ textarea.withLargeViewer[data-calc='82A'] {
 #advancedCreator {
     display: none;
 }
+.smallText{
+    font-size: 12px;
+}

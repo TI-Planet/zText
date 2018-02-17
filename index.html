@@ -9,6 +9,10 @@
     <script src="FileSaver.min.js" async></script>
     <script src="tivars_test.js" async></script>
     <script src="generator.js?new=2"></script>
+    <script src="text2pdf/functions.js"></script>
+     <script src="text2pdf/pdf.worker.js"></script>
+    <script src="text2pdf/pdf.js"></script>
+   
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
@@ -23,7 +27,7 @@
 <div class="container">
     <div class="jumbotron">
         <div class="reduced">
-            <h3 id="topTitle" style="display:none">zText: convertisseur texte => 8xp</h3>
+            <h3 id="topTitle" style="display:none">zText: convertisseur pdf/texte => 8xp</h3>
 
             <form id="convForm">
                 <section id="advancedCreator">
@@ -45,7 +49,9 @@
                     </section>
                     <br>
                     <div class="hiddenWhenLargeViewer">
-                    Tu souhaites organiser ton cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Clique-ici</button>
+                    Tu souhaites organiser ton cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Clique-ici</button><br /><br />
+                    Tu peux aussi charger un fichier PDF en rentrant l'adresse de celui-ci:
+                    <input type="text" name="pdfurl" id="pdfurl" class="pdfurl" placeholder="http://votresite.fr/fichier.pdf" />&nbsp;&nbsp;&nbsp;<img src="images/PDF.png" width="30px" height="30px" onclick="loadPdf();" alt="pdfimg" title="Charger un fichier pdf"/><br /><span class="smallText"><i>(Tu peux uploader au préalable ton fichier pdf en <a href="https://tiplanet.org/forum/upload.php">cliquant ici</a> et fournir simplement l'URL directe vers le fichier)</i></span>
                     <br><br>
                     </div>
                     <div id="textareaWrapper">
@@ -106,6 +112,7 @@
 </div>
 
 <script>
+
 
     function inIframe() {
         try {
