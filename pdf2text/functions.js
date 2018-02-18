@@ -26,10 +26,11 @@ function handlePdf(data){
 
     document.getElementById('loaderPdf').innerHTML = "<b><font color=#FE2E2E>Chargement du fichier en cours...</font></b>&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;<img src='images/ajax-loader.gif' alt='loader' height='10px' width='10px'/>";
     document.getElementById('myText0').innerHTML = "* Début du fichier PDF*\n";
+    $('#myText0').prop('disabled', true); //disable textarea while loading the pdf file
 
     var fileList = this.files;
     var MyFile = data[0];
-    var maxPages = 10;
+    var maxPages = 2000;
     var fileReader = new FileReader();
 
     fileReader.onload = function() {
@@ -55,18 +56,20 @@ function handlePdf(data){
 
                 });
                 document.getElementById('loaderPdf').innerHTML = "<b><font color=#3ADF00>Fichier pdf chargé!</font></b>";
+                $('#myText0').prop('disabled', false); //enable the textarea
             }else{
                 alert("Le document comporte trop de pages! Maxmimum "+maxPages+" pages.");
                 document.getElementById('loaderPdf').innerHTML = "<b><font color=#FE2E2E>Echec lors du chargement fichier pdf: trop de pages.</font></b>";
-
+                $('#myText0').prop('disabled', false); //enable the textarea
 
             }
 
         }, function (reason) {
             document.getElementById('loaderPdf').innerHTML = "<b><font color=#FE2E2E>"+reason+"</font></b>";
-
+            $('#myText0').prop('disabled', false); //enable the textarea
         });
 
+         
     };
 
     fileReader.readAsArrayBuffer(MyFile);
