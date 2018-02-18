@@ -51,7 +51,8 @@
                     Tu souhaites organiser ton cours en plusieurs parties avec un menu ? <button id="toggleAdvanced" class="btn btn-success btn-xs">Clique-ici</button><br /><br />
                     Tu peux aussi charger le texte d'un fichier PDF :
                     <input type="file" id="pdfFile" onchange="handlePdf(this.files)"/>
-                    <br><br>
+                    <span class="loaderPdf" id="loaderPdf"></span>
+                    <br /><br />
                     </div>
                     <div id="textareaWrapper">
                         <textarea id="myText0" title="Ton texte ici" name="myText0" placeholder="Écris ton texte dans cette zone" required></textarea>
