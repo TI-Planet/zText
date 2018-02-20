@@ -217,10 +217,14 @@ function create8xpFile(title, content)
         const file = FS.readFile(filePath, {encoding: 'binary'});
         if (file)
         {
+            if (file.byteLength > 65525) {
+                alert('Fichier trop gros - Veuillez mettre moins de texte...');
+                return;
+            }
             const blob = new Blob([file], {type: 'application/octet-stream'});
             window['saveAs'](blob, filePath.split('/').pop());
         } else {
-            alert('Impossible de récupérer le fichier généré:(');
+            alert('Impossible de récupérer le fichier généré :( Essayez avec moins de texte ?');
         }
 
     } catch (e)
