@@ -149,7 +149,7 @@ function generateCourseForSmallViewer()
 function generateCourseForLargeViewer()
 {
     // Encodage...
-    text = $('#myText0').val().replace(/\"/g, "'"); //remplace les " par des '
+    text = $('#myText0').val().replace(/\"/g, "'").replace(/→/g, "->").replace("\n\n", "\n \n"); //remplace les " par des '
     let cor = text.split("\n");
     let bc = cor;
     // 83PCE
